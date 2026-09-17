@@ -1,0 +1,81 @@
+# ==========================================
+# Git Ignore Configuration for CropShield
+# ==========================================
+
+# Java & Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.tar.gz
+*.zip
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDEs and Editors
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# Python & AI
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# AI Model checkpoints and large weights
+cropshield-ai/model/*.h5
+cropshield-ai/model/*.keras
+cropshield-ai/model/*.tflite
+cropshield-ai/model/*.pt
+cropshield-ai/model/*.pth
+!cropshield-ai/model/.gitkeep
+
+# Local Uploads (keep directories via .gitkeep)
+uploads/*
+!uploads/.gitkeep
+cropshield-backend/uploads/*
+!cropshield-backend/uploads/.gitkeep
+cropshield-ai/uploads/*
+!cropshield-ai/uploads/.gitkeep
+
+# Environment & Sensitive configs
+.env
+.env.local
+*.local.properties
+
+# Logs
+*.log
+logs/
+
+# Operating System specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.lnk
