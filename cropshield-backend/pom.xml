@@ -21,13 +21,6 @@
     </properties>
     
     <dependencies>
-        <!-- Spring Boot Starters -->
-        <artifactId>spring-boot-starter-web</artifactId>
-        <groupId>org.springframework.boot</groupId>
-    </dependencies>
-    
-    <!-- We will specify other dependencies as standard inside the dependencies tag -->
-    <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

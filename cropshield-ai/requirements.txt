@@ -1,6 +1,6 @@
 Flask==3.0.2
 Flask-CORS==4.0.0
 numpy==1.26.4
-opencv-python==4.9.0.80
+opencv-python-headless==4.9.0.80
 Pillow==10.2.0
-# tensorflow can be installed separately, or we will implement an intelligent mock-CNN fallback inside app.py
+gunicorn==21.2.0
