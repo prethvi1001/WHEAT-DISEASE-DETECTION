@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropShield - AI-Powered Wheat Disease Detection & Health Management</title>
+    <meta name="description" content="Protecting Every Wheat Crop with Artificial Intelligence. Upload wheat leaf images to detect diseases instantly with Deep Learning CNN models.">
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-mode">
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#" id="nav-logo">
+                <i class="fa-solid fa-shield-halved me-2 text-warning fs-3"></i>
+                <div>
+                    <span class="fw-bold tracking-wide text-white">Crop<span class="text-warning">Shield</span></span>
+                    <small class="d-block text-light-50 font-8" style="font-size: 0.65rem; letter-spacing: 0.5px;">WHEAT HEALTH SYSTEM</small>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#cropshieldNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="cropshieldNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#" onclick="showSection('home-sec')"><i class="fa-solid fa-house me-1"></i> <span data-lang="nav_home">Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('detection-sec')"><i class="fa-solid fa-microscope me-1"></i> <span data-lang="nav_detection">AI Detection</span></a></li>
+                    <li class="nav-item"><a class="nav-link text-warning fw-semibold" href="#" onclick="showSection('animal-sec')"><i class="fa-solid fa-cow me-1"></i> <span data-lang="nav_animal">🐄 Animal Care</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('diseases-sec')"><i class="fa-solid fa-leaf me-1"></i> <span data-lang="nav_diseases">Diseases Info</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('prevention-sec')"><i class="fa-solid fa-shield-heart me-1"></i> <span data-lang="nav_prevention">Prevention</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="nav-dashboard" onclick="showSection('dashboard-sec')" style="display: none;"><i class="fa-solid fa-chart-line me-1"></i> <span data-lang="nav_dashboard">Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('about-sec')"><i class="fa-solid fa-circle-info me-1"></i> <span data-lang="nav_about">About</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('contact-sec')"><i class="fa-solid fa-envelope me-1"></i> <span data-lang="nav_contact">Contact</span></a></li>
+                    <li class="nav-item"><a class="nav-link text-warning fw-semibold" href="#" id="nav-admin" onclick="showSection('admin-sec')" style="display: none;"><i class="fa-solid fa-user-gear me-1"></i> <span data-lang="nav_admin">Admin Panel</span></a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Language Selection -->
+                    <select class="form-select form-select-sm language-select" id="lang-select" onchange="toggleLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="ta">தமிழ் (Tamil)</option>
+                    </select>
+
+                    <!-- Theme Toggle -->
+                    <button class="btn btn-outline-light btn-sm rounded-circle" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <!-- Login/User Interface -->
+                    <div id="auth-buttons">
+                        <button class="btn btn-outline-warning btn-sm fw-medium px-3" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="fa-solid fa-right-to-bracket me-1"></i> <span data-lang="login">Login</span></button>
+                    </div>
+                    <div id="user-profile" class="dropdown" style="display: none;">
+                        <button class="btn btn-warning btn-sm dropdown-toggle fw-semibold px-3" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user-circle me-1"></i> <span id="user-display-name">Farmer</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="#" onclick="showSection('dashboard-sec')"><i class="fa-solid fa-gauge me-2 text-success"></i>My Health Desk</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showSection('admin-sec')" id="profile-admin-link" style="display:none;"><i class="fa-solid fa-user-gear me-2 text-danger"></i>Admin Board</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="page-content">
+
+        <!-- ============================================== -->
+        <!-- HOME SECTION -->
+        <!-- ============================================== -->
+        <section id="home-sec" class="app-section active-section">
+            <!-- Hero Banner -->
+            <div class="hero-banner d-flex align-items-center">
+                <div class="container text-center text-white">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold text-uppercase tracking-wider mb-3 fade-in" style="font-size: 0.85rem;" data-lang="hero_badge"><i class="fa-solid fa-bolt me-1"></i> Advanced Agriculture AI</span>
+                    <h1 class="display-3 fw-bold mb-3 text-shadow fade-in" data-lang="hero_title">CropShield</h1>
+                    <p class="lead mb-4 text-shadow font-poppins fade-in mx-auto" style="max-width: 650px;" data-lang="hero_tagline">"Protecting Every Wheat Crop with Artificial Intelligence"</p>
+                    <div class="d-flex justify-content-center gap-3 fade-in">
+                        <button class="btn btn-warning btn-lg px-4 py-3 fw-bold text-dark hover-lift" onclick="showSection('detection-sec')"><i class="fa-solid fa-microscope me-2"></i> <span data-lang="btn_get_started">Get Started</span></button>
+                        <button class="btn btn-outline-light btn-lg px-4 py-3 fw-bold hover-lift" onclick="scrollToElement('features-row')"><i class="fa-solid fa-circle-info me-2"></i> <span data-lang="btn_explore">Explore Features</span></button>
+                    </div>
+                    <!-- Quick Search Bar -->
+                    <div class="search-box-container mx-auto mt-5 col-md-8 col-lg-6 shadow fade-in">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-0 text-success"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" class="form-control border-0 py-3 font-poppins" id="search-disease-input" placeholder="Search wheat diseases (e.g. Leaf Rust, Powdery Mildew)..." onkeyup="filterDiseaseSearch()">
+                        </div>
+                        <ul class="list-group text-start shadow" id="search-results-list" style="display:none; position: absolute; width: 100%; z-index: 1000;">
+                            <!-- Dynamic items -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="container stats-bar-container">
+                <div class="row text-center g-4 justify-content-center">
+                    <div class="col-md-3">
+                        <div class="stat-card p-4 shadow bg-glass">
+                            <i class="fa-solid fa-gauge-high text-success fs-1 mb-2"></i>
+                            <h2 class="fw-bold text-success" id="stat-accuracy">98.4%</h2>
+                            <p class="text-muted mb-0 fw-medium font-poppins" data-lang="stat_accuracy">CNN Diagnostic Accuracy</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card p-4 shadow bg-glass">
+                            <i class="fa-solid fa-cubes text-warning fs-1 mb-2"></i>
+                            <h2 class="fw-bold text-warning" id="stat-classes">7 Classes</h2>
+                            <p class="text-muted mb-0 fw-medium font-poppins" data-lang="stat_diseases">Wheat Conditions Cataloged</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card p-4 shadow bg-glass">
+                            <i class="fa-solid fa-bolt-lightning text-success fs-1 mb-2"></i>
+                            <h2 class="fw-bold text-success">&lt; 1.5s</h2>
+                            <p class="text-muted mb-0 fw-medium font-poppins" data-lang="stat_speed">Inference Response Time</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card p-4 shadow bg-glass">
+                            <i class="fa-solid fa-seedling text-warning fs-1 mb-2"></i>
+                            <h2 class="fw-bold text-warning" id="stat-scans">1,240+</h2>
+                            <p class="text-muted mb-0 fw-medium font-poppins" data-lang="stat_farmers">Smart Farm Diagnostics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="container my-5 py-4" id="features-row">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-success fw-bold" data-lang="feat_heading">Our Smart Capabilities</h2>
+                    <div class="title-divider mx-auto bg-warning"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto" data-lang="feat_sub">Bringing cutting-edge deep learning tools from research labs straight into the agricultural fields.</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="feature-box p-4 rounded bg-glass shadow hover-lift border-top border-3 border-success">
+                            <div class="icon-wrap bg-success text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fa-solid fa-brain fs-4"></i>
+                            </div>
+                            <h4 class="fw-bold" data-lang="feat1_title">Deep Learning Detection</h4>
+                            <p class="text-muted font-poppins" data-lang="feat1_desc">Uses multi-layer Convolutional Neural Networks (CNNs) trained on segmented datasets to identify leaf pustules, mildew webs, and necrotic margins.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box p-4 rounded bg-glass shadow hover-lift border-top border-3 border-warning">
+                            <div class="icon-wrap bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fa-solid fa-file-pdf fs-4"></i>
+                            </div>
+                            <h4 class="fw-bold" data-lang="feat2_title">Fungicide & Health Reports</h4>
+                            <p class="text-muted font-poppins" data-lang="feat2_desc">Generate official formatted PDF health certificates stating severity indexes, chemical controls, organic management, and recovery checklists.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box p-4 rounded bg-glass shadow hover-lift border-top border-3 border-success">
+                            <div class="icon-wrap bg-success text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fa-solid fa-volume-high fs-4"></i>
+                            </div>
+                            <h4 class="fw-bold" data-lang="feat3_title">Voice & Tamil Support</h4>
+                            <p class="text-muted font-poppins" data-lang="feat3_desc">Built-in localization to Tamil and speech synthesis to read results aloud, ensuring accessibility for local farmers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Carousel Banner -->
+            <div class="container my-5">
+                <div id="wheatGallery" class="carousel slide shadow rounded overflow-hidden" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#wheatGallery" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#wheatGallery" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#wheatGallery" data-bs-slide-to="2"></button>
+                    </div>
+                    <div class="carousel-inner" style="height: 400px;">
+                        <div class="carousel-item active">
+                            <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=1600&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Wheat Field">
+                            <div class="carousel-caption bg-dark-50 p-4 rounded">
+                                <h3 class="fw-bold text-warning" data-lang="car1_title">Securing Global Food Chains</h3>
+                                <p data-lang="car1_desc">Wheat accounts for 20% of calories globally. CropShield helps farmers combat rust spores early to secure crop yield.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=1600&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Farmer Inspecting Leaf">
+                            <div class="carousel-caption bg-dark-50 p-4 rounded">
+                                <h3 class="fw-bold text-warning" data-lang="car2_title">Empowering Local Agriculturists</h3>
+                                <p data-lang="car2_desc">Instant analysis right on your smartphone. CropShield delivers visual and voice readouts requiring no expert agronomist on site.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1600&q=80" class="d-block w-100 h-100 object-fit-cover" alt="Smart Agri Tech">
+                            <div class="carousel-caption bg-dark-50 p-4 rounded">
+                                <h3 class="fw-bold text-warning" data-lang="car3_title">State-of-the-Art Deep Learning</h3>
+                                <p data-lang="car3_desc">Built with advanced Neural Networks optimized for field noise, shadows, and angle skew variations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#wheatGallery" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#wheatGallery" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- AI DETECTION SECTION -->
+        <!-- ============================================== -->
+        <section id="detection-sec" class="app-section">
+            <div class="container my-5">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-success fw-bold" data-lang="det_heading">AI Disease Diagnostic Laboratory</h2>
+                    <div class="title-divider mx-auto bg-warning"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto" data-lang="det_sub">Upload a high-resolution image of a wheat leaf. The CropShield neural engine will inspect the surface structure and diagnose conditions.</p>
+                </div>
+
+                <div class="row justify-content-center">
+                    <!-- Upload Column -->
+                    <div class="col-lg-5 mb-4">
+                        <div class="card bg-glass border-0 shadow p-4 text-center d-flex flex-column align-items-center justify-content-center" style="min-height: 380px;">
+                            <h5 class="fw-bold text-success mb-3" data-lang="det_upload_title">Submit Wheat Leaf Image</h5>
+                            
+                            <!-- Drag and Drop Area -->
+                            <div class="upload-dropzone w-100 p-4 mb-3 border border-2 border-dashed border-success rounded d-flex flex-column align-items-center justify-content-center cursor-pointer bg-light-green" id="dropzone" onclick="triggerFileInput()">
+                                <i class="fa-solid fa-cloud-arrow-up text-success fs-1 mb-2"></i>
+                                <p class="mb-1 fw-semibold text-success" data-lang="det_drag_text">Drag & Drop Image here</p>
+                                <p class="text-muted font-poppins font-8 mb-0" data-lang="det_or_browse">or browse from storage</p>
+                                <input type="file" id="leaf-image-input" accept="image/*" class="d-none" onchange="previewSelectedImage(event)">
+                            </div>
+                            
+                            <!-- Preview Box -->
+                            <div class="w-100 rounded overflow-hidden shadow mb-3 d-none position-relative" id="preview-box" style="height: 180px;">
+                                <img id="leaf-preview" src="#" alt="Leaf Preview" class="w-100 h-100 object-fit-cover">
+                                <button class="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 m-2" onclick="clearSelectedImage(event)" title="Remove Image">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                            </div>
+
+                            <button class="btn btn-success w-100 py-3 fw-bold" id="btn-predict" onclick="submitDiagnosticRequest()" disabled>
+                                <i class="fa-solid fa-wand-magic-sparkles me-2"></i><span data-lang="btn_diagnose">Run AI Diagnosis</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Output / Loading Column -->
+                    <div class="col-lg-7 mb-4">
+                        <!-- Default state -->
+                        <div class="card bg-glass border-0 shadow p-4 d-flex flex-column align-items-center justify-content-center text-center" id="output-default" style="min-height: 380px;">
+                            <i class="fa-solid fa-microscope text-muted display-4 mb-3"></i>
+                            <h4 class="fw-bold text-muted" data-lang="det_wait_title">Awaiting Diagnostic Input</h4>
+                            <p class="text-muted font-poppins max-width-400 mx-auto" data-lang="det_wait_desc">Upload a wheat leaf photo and run the diagnosis to generate real-time AI results here.</p>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="card bg-glass border-0 shadow p-4 d-none flex-column justify-content-center" id="output-loading" style="min-height: 380px;">
+                            <h5 class="fw-bold text-success text-center mb-4"><i class="fa-solid fa-circle-notch fa-spin me-2"></i> CropShield Neural Network Inference</h5>
+                            <div class="prediction-progress-steps">
+                                <div class="step-line active" id="step-upload">1. Uploading image to gateway...</div>
+                                <div class="step-line" id="step-preprocess">2. Image Preprocessing (Resize & Noise Removal)...</div>
+                                <div class="step-line" id="step-cnn">3. CNN Deep Feature Extraction...</div>
+                                <div class="step-line" id="step-classify">4. Softmax Probability Classification...</div>
+                                <div class="step-line" id="step-db">5. Logging diagnosis report into MySQL...</div>
+                            </div>
+                            <div class="progress mt-4 bg-light" style="height: 10px;">
+                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="detection-progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Results Card -->
+                        <div class="card bg-glass border-0 shadow p-4 d-none" id="output-result" style="min-height: 380px;">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <h4 class="fw-bold text-success mb-0"><i class="fa-solid fa-circle-check me-2"></i> Diagnosis Report</h4>
+                                <div class="d-flex gap-2">
+                                    <!-- Voice assistant control -->
+                                    <button class="btn btn-outline-success btn-sm rounded-circle" onclick="speakPrediction()" title="Read Aloud">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                    <button class="btn btn-outline-warning btn-sm" id="btn-download-pdf" onclick="downloadReportPdf()"><i class="fa-solid fa-file-pdf me-1"></i> PDF</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 text-center mb-3">
+                                    <div class="rounded overflow-hidden shadow mx-auto mb-2" style="max-width: 200px; height: 150px;">
+                                        <img id="result-leaf-image" src="" alt="Analyzed Leaf" class="w-100 h-100 object-fit-cover">
+                                    </div>
+                                    <h5 class="fw-bold text-success mb-0" id="result-disease-name">Healthy Wheat</h5>
+                                    <small class="text-muted d-block italic font-poppins" id="result-scientific-name">Triticum aestivum</small>
+                                    <span class="badge mt-2 px-3 py-1 rounded" id="result-severity-badge">LOW SEVERITY</span>
+                                </div>
+                                <div class="col-md-7">
+                                    <table class="table table-sm table-borderless font-poppins">
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-semibold text-success" style="width: 110px;">Confidence:</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span id="result-confidence" class="fw-bold text-warning">96.5%</span>
+                                                        <div class="progress flex-grow-1" style="height: 6px;">
+                                                            <div class="progress-bar bg-warning" id="result-confidence-bar" style="width: 96.5%;"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold text-success">Symptoms:</td>
+                                                <td class="font-8 text-muted" id="result-symptoms">Leaves look clean and green.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold text-success">Causes:</td>
+                                                <td class="font-8 text-muted" id="result-causes">No pathogen spores present.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold text-success">Fungicide:</td>
+                                                <td class="font-8 text-dark" id="result-fungicide">None</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold text-success">Expected:</td>
+                                                <td class="font-8 text-dark" id="result-recovery">N/A</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="mt-2 bg-light-green p-3 rounded font-poppins border-start border-3 border-success">
+                                <h6 class="fw-bold text-success mb-1"><i class="fa-solid fa-hand-holding-heart me-1"></i> Smart Recommendations:</h6>
+                                <p class="text-dark font-8 mb-0" id="result-treatment">Maintain crop monitoring.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- ANIMAL PHOTO DISEASE ANALYSIS SECTION -->
+        <!-- ============================================== -->
+        <section id="animal-sec" class="app-section">
+            <div class="container my-5">
+                <div class="text-center mb-5">
+                    <span class="badge bg-danger text-white px-3 py-2 rounded-pill fw-semibold text-uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-cow me-1"></i> Livestock Healthcare AI
+                    </span>
+                    <h2 class="section-title text-success fw-bold">Photo Disease Analysis & Veterinary Care</h2>
+                    <div class="title-divider mx-auto bg-warning"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto">Upload an animal photograph and describe symptoms to get instant visible signs analysis, safety disclaimers, support guidelines, and Tamil voice instructions.</p>
+                </div>
+
+                <!-- Animal Selection Cards -->
+                <div class="row justify-content-center g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="animal-card card p-3 text-center border-2 border-success rounded-3 cursor-pointer shadow-sm active-animal" id="animal-card-cow" onclick="selectAnimalType('cow')">
+                            <div class="fs-1 mb-1">🐄</div>
+                            <h6 class="fw-bold text-success mb-0">Cow / மாடு</h6>
+                            <small class="text-muted">Cattle</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="animal-card card p-3 text-center border-1 border-secondary rounded-3 cursor-pointer shadow-sm" id="animal-card-goat" onclick="selectAnimalType('goat')">
+                            <div class="fs-1 mb-1">🐐</div>
+                            <h6 class="fw-bold text-dark mb-0">Goat / ஆடு</h6>
+                            <small class="text-muted">Caprine</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="animal-card card p-3 text-center border-1 border-secondary rounded-3 cursor-pointer shadow-sm" id="animal-card-sheep" onclick="selectAnimalType('sheep')">
+                            <div class="fs-1 mb-1">🐑</div>
+                            <h6 class="fw-bold text-dark mb-0">Sheep / செம்மறியாடு</h6>
+                            <small class="text-muted">Ovine</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="animal-card card p-3 text-center border-1 border-secondary rounded-3 cursor-pointer shadow-sm" id="animal-card-hen" onclick="selectAnimalType('hen')">
+                            <div class="fs-1 mb-1">🐔</div>
+                            <h6 class="fw-bold text-dark mb-0">Hen / Poultry / கோழி</h6>
+                            <small class="text-muted">Avian</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <!-- Left Form Column -->
+                    <div class="col-lg-5 mb-4">
+                        <div class="card bg-glass border-0 shadow p-4">
+                            <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-camera me-2"></i> Upload Animal Photo & Symptoms</h5>
+                            
+                            <!-- Hidden animal type input -->
+                            <input type="hidden" id="selected-animal-type" value="cow">
+
+                            <!-- Photo Dropzone -->
+                            <div class="upload-dropzone p-4 mb-3 border border-2 border-dashed border-success rounded text-center cursor-pointer bg-light-green" id="animal-dropzone" onclick="triggerAnimalFileInput()">
+                                <i class="fa-solid fa-cloud-arrow-up text-success fs-1 mb-2"></i>
+                                <p class="mb-1 fw-semibold text-success">Upload Animal Photo</p>
+                                <p class="text-muted font-poppins font-8 mb-0">Click to upload photo of sick animal</p>
+                                <input type="file" id="animal-image-input" accept="image/*" class="d-none" onchange="previewAnimalImage(event)">
+                            </div>
+
+                            <!-- Preview Box -->
+                            <div class="w-100 rounded overflow-hidden shadow mb-3 d-none position-relative" id="animal-preview-box" style="height: 180px;">
+                                <img id="animal-preview" src="#" alt="Animal Preview" class="w-100 h-100 object-fit-cover">
+                                <button class="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 m-2" onclick="clearAnimalImage(event)" title="Remove Image">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                            </div>
+
+                            <!-- Symptoms Input Area -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label for="animal-symptoms-input" class="form-label font-8 text-muted fw-semibold mb-0">Farmer Symptoms / அறிகுறிகள்</label>
+                                    <button class="btn btn-outline-danger btn-sm rounded-pill py-0 px-2 font-8" id="voice-input-btn" onclick="toggleVoiceSpeechInput()" title="Speak Symptoms">
+                                        <i class="fa-solid fa-microphone me-1"></i> <span id="mic-btn-text">Speak</span>
+                                    </button>
+                                </div>
+                                <textarea class="form-control font-poppins" id="animal-symptoms-input" rows="3" placeholder="Describe symptoms (e.g. My cow has fever and is not eating...)"></textarea>
+                                <small class="text-muted font-8 italic d-block mt-1">Example: "My cow has fever and is not eating."</small>
+                            </div>
+
+                            <button class="btn btn-success w-100 py-3 fw-bold shadow-sm" id="btn-analyze-animal" onclick="submitAnimalAnalysis()">
+                                <i class="fa-solid fa-magnifying-glass-plus me-2"></i> Analyze Animal Health
+                            </button>
+                        </div>
+
+                        <!-- Large Red Emergency Button Box -->
+                        <div class="card border-2 border-danger bg-danger-subtle p-3 mt-3 text-center shadow">
+                            <h6 class="fw-bold text-danger mb-2"><i class="fa-solid fa-triangle-exclamation me-1"></i> Emergency Critical Warning</h6>
+                            <p class="font-8 text-muted mb-3">If the cow cannot stand, has severe breathing difficulty, refuses water, shows severe weakness, or has bloody discharge/diarrhea:</p>
+                            <button class="btn btn-danger btn-lg w-100 fw-bold py-3 shadow hover-lift pulse-red" onclick="triggerEmergencyVetModal()">
+                                🚨 CONTACT VETERINARIAN
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Output Column -->
+                    <div class="col-lg-7 mb-4">
+                        <!-- Default placeholder -->
+                        <div class="card bg-glass border-0 shadow p-4 d-flex flex-column align-items-center justify-content-center text-center" id="animal-output-default" style="min-height: 480px;">
+                            <i class="fa-solid fa-cow text-muted display-3 mb-3"></i>
+                            <h4 class="fw-bold text-muted">Awaiting Animal Data</h4>
+                            <p class="text-muted font-poppins max-width-400 mx-auto">Select an animal, upload a photograph, and enter symptoms to generate a comprehensive disease analysis report.</p>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="card bg-glass border-0 shadow p-4 d-none flex-column justify-content-center text-center" id="animal-output-loading" style="min-height: 480px;">
+                            <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-circle-notch fa-spin me-2"></i> Analyzing Animal Photograph & Symptoms...</h5>
+                            <p class="text-muted font-poppins font-8">Processing OpenCV visual feature extraction, symptom matching, risk evaluation, and Tamil speech synthesis.</p>
+                            <div class="progress bg-light mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated w-100"></div>
+                            </div>
+                        </div>
+
+                        <!-- Results Card -->
+                        <div class="card bg-glass border-0 shadow p-4 d-none" id="animal-output-result">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <h4 class="fw-bold text-success mb-0"><i class="fa-solid fa-camera me-2"></i> 📷 Photo Analysis</h4>
+                                <span class="badge px-3 py-2 rounded-pill font-8 fw-bold bg-warning text-dark" id="animal-risk-badge">MODERATE RISK</span>
+                            </div>
+
+                            <!-- Header Summary -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded border border-success h-100">
+                                        <small class="text-muted d-block fw-semibold">🐄 Animal / விலங்கு</small>
+                                        <strong class="text-success fs-5" id="res-animal-display">Cow / மாடு</strong>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded border border-warning h-100">
+                                        <small class="text-muted d-block fw-semibold">📝 Farmer Symptoms</small>
+                                        <span class="text-dark font-9 italic" id="res-farmer-symptoms">"My cow has fever and is not eating."</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Visible Signs & Possible Problem -->
+                            <div class="card border-0 bg-light-green p-3 mb-3 border-start border-4 border-success">
+                                <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-eye me-1"></i> 🔍 Visible Signs (Detected from Photo Analysis):</h6>
+                                <ul class="mb-0 font-9 text-dark ps-3" id="res-visible-signs-list">
+                                    <!-- Dynamic items -->
+                                </ul>
+                            </div>
+
+                            <div class="card border-0 bg-warning-light p-3 mb-3 border-start border-4 border-warning">
+                                <h6 class="fw-bold text-dark mb-1"><i class="fa-solid fa-virus me-1"></i> 🦠 Possible Problem / நோய்:</h6>
+                                <p class="fw-bold text-danger mb-1" id="res-primary-problem">Possible fever/illness. Fever itself is a symptom, not a final diagnosis.</p>
+                                <p class="font-8 text-muted mb-2">Other possible underlying causes: Bovine Viral Infection, Pneumonia, Tick Fever, Mastitis.</p>
+                                
+                                <h6 class="fw-semibold text-dark font-8 mb-1">🔍 Common symptoms to check:</h6>
+                                <div class="row g-1 font-8 text-dark" id="res-common-symptoms-grid">
+                                    <!-- Check items -->
+                                </div>
+                            </div>
+
+                            <!-- Interactive Questionnaire Form for Farmer -->
+                            <div class="card border-0 bg-white p-3 mb-3 shadow-sm border border-secondary">
+                                <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-clipboard-question me-1"></i> Ask the Farmer for Details / கூடுதல் விவரங்கள்:</h6>
+                                <div class="row g-2 font-8">
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Measured body temperature</label>
+                                        <input type="text" class="form-control form-control-sm" id="q-temp" placeholder="e.g. 103.5 °F">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Fever Duration</label>
+                                        <input type="text" class="form-control form-control-sm" id="q-duration" placeholder="e.g. 2 days">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Age of Animal</label>
+                                        <input type="text" class="form-control form-control-sm" id="q-age" placeholder="e.g. 4 years">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Milk Production Changes</label>
+                                        <select class="form-select form-select-sm" id="q-milk">
+                                            <option value="Reduced">Reduced milk production</option>
+                                            <option value="Normal">Normal</option>
+                                            <option value="Stopped">Completely stopped</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Coughing / Nasal Discharge</label>
+                                        <select class="form-select form-select-sm" id="q-cough">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Diarrhea</label>
+                                        <select class="form-select form-select-sm" id="q-diarrhea">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Tick Exposure</label>
+                                        <select class="form-select form-select-sm" id="q-tick">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Recent Vaccination</label>
+                                        <select class="form-select form-select-sm" id="q-vaccine">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label mb-1 text-muted">Pregnancy Status</label>
+                                        <select class="form-select form-select-sm" id="q-pregnant">
+                                            <option value="Pregnant">Pregnant</option>
+                                            <option value="Lactating">Lactating</option>
+                                            <option value="None">None</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Medicine Safety & Vet Prescription Section -->
+                            <div class="card border-0 bg-light p-3 mb-3 border-start border-4 border-info">
+                                <h6 class="fw-bold text-info-emphasis mb-1"><i class="fa-solid fa-pills me-1"></i> MEDICINE / TABLET SAFETY:</h6>
+                                <p class="font-8 text-dark mb-2 font-poppins" id="res-med-disclaimer">
+                                    "Medicine depends on the actual cause of fever, the cow's weight, age, pregnancy/lactation status and veterinary examination. Please contact a qualified veterinarian before giving medicine."
+                                </p>
+                                
+                                <div class="alert alert-warning py-2 px-3 mb-3 font-8 fw-bold" id="res-med-warning">
+                                    ⚠️ "Do not give human fever medicine to cattle unless specifically instructed by a veterinarian."
+                                </div>
+
+                                <!-- Vet Prescription Recorder -->
+                                <div class="bg-white p-3 rounded border">
+                                    <h6 class="fw-bold text-success font-9 mb-2"><i class="fa-solid fa-notes-medical me-1"></i> Record Veterinarian Prescribed Treatment</h6>
+                                    <form id="vet-treatment-form" onsubmit="submitVetTreatment(event)">
+                                        <div class="row g-2 font-8">
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control form-control-sm" id="vet-med-name" placeholder="Medicine Name" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control form-control-sm" id="vet-dose" placeholder="Dose Prescribed by Vet" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="datetime-local" class="form-control form-control-sm" id="vet-date" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control form-control-sm" id="vet-duration" placeholder="Duration (e.g. 5 days)" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control form-control-sm" id="vet-next-treatment" placeholder="Next Treatment Date/Time">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control form-control-sm" id="vet-instructions" placeholder="Vet Instructions">
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-outline-success btn-sm font-8 fw-bold w-100">
+                                                    <i class="fa-solid fa-floppy-disk me-1"></i> Record Prescribed Medicine
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Immediate Support -->
+                            <div class="card border-0 bg-light-green p-3 mb-3 border-start border-4 border-success">
+                                <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-hand-holding-heart me-1"></i> IMMEDIATE SUPPORT:</h6>
+                                <ul class="mb-0 font-9 text-dark ps-3">
+                                    <li>Provide clean drinking water.</li>
+                                    <li>Keep the animal in a clean, shaded, well-ventilated area.</li>
+                                    <li>Monitor temperature and behavior.</li>
+                                    <li>Keep a sick animal separated when infectious disease is suspected.</li>
+                                    <li>Contact a veterinarian for examination.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Tamil Voice Response Card -->
+                            <div class="card border-0 bg-dark text-white p-3 mb-3 shadow rounded">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-warning mb-0"><i class="fa-solid fa-volume-high me-2"></i> TAMIL VOICE RESPONSE / தமிழ் ஒலி விளக்கம்</h6>
+                                    <button class="btn btn-warning btn-sm rounded-pill fw-bold font-8 px-3" onclick="playTamilSpeechResponse()">
+                                        <i class="fa-solid fa-play me-1"></i> Listen Aloud (கேட்க)
+                                    </button>
+                                </div>
+                                <p class="font-poppins font-9 text-light mb-0 italic" id="res-tamil-voice-text" style="line-height: 1.6;">
+                                    "உங்கள் மாட்டிற்கு காய்ச்சல் இருக்கலாம். உணவு சாப்பிடாமல் இருப்பது முக்கியமான அறிகுறியாகும். உடல் வெப்பநிலையை அளந்து பதிவு செய்யுங்கள். சுத்தமான தண்ணீர் கொடுத்து, மாட்டை சுத்தமான நிழலான இடத்தில் வைத்திருங்கள். எந்த மாத்திரை அல்லது ஆன்டிபயாட்டிக் மருந்தையும் கால்நடை மருத்துவரின் ஆலோசனை இல்லாமல் கொடுக்க வேண்டாம். நிலை மோசமாக இருந்தால் உடனடியாக கால்நடை மருத்துவரை அணுகுங்கள்."
+                                </p>
+                            </div>
+
+                            <!-- Emergency Action Button -->
+                            <div class="text-center mt-3">
+                                <button class="btn btn-danger btn-lg w-100 fw-bold py-3 shadow hover-lift pulse-red" onclick="triggerEmergencyVetModal()">
+                                    🚨 CONTACT VETERINARIAN
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- WHEAT DISEASES CATALOG -->
+        <!-- ============================================== -->
+        <section id="diseases-sec" class="app-section">
+            <div class="container my-5">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-success fw-bold" data-lang="catalog_title">Wheat Pathogen Library</h2>
+                    <div class="title-divider mx-auto bg-warning"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto" data-lang="catalog_sub">Detailed catalog of key wheat leaves rusts and mildew pathogens. Browse symptoms, structural causes, and curative fungicides.</p>
+                </div>
+
+                <div class="row g-4" id="disease-catalog-row">
+                    <!-- Dynamic Disease Cards generated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- PREVENTION PAGE -->
+        <!-- ============================================== -->
+        <section id="prevention-sec" class="app-section">
+            <div class="container my-5">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-success fw-bold" data-lang="prev_heading">Smart Wheat Protection Protocols</h2>
+                    <div class="title-divider mx-auto bg-warning"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto" data-lang="prev_sub">Integrated Pest Management (IPM) techniques for high-yield wheat cultivation.</p>
+                </div>
+
+                <div class="row g-4 font-poppins">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card border-0 shadow bg-glass p-4 h-100 hover-lift">
+                            <i class="fa-solid fa-arrows-spin text-success fs-1 mb-3"></i>
+                            <h5 class="fw-bold" data-lang="prev1_title">Crop Rotation</h5>
+                            <p class="text-muted font-8 mb-0" data-lang="prev1_desc">Avoid sowing wheat consecutively in the same soil. Rotate with non-cereal legumes (e.g., chickpea, mung bean) to break the lifecycle of soil-borne pathogens like Leaf Blight spores.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card border-0 shadow bg-glass p-4 h-100 hover-lift">
+                            <i class="fa-solid fa-prescription-bottle-medical text-warning fs-1 mb-3"></i>
+                            <h5 class="fw-bold" data-lang="prev2_title">Seed Treatment</h5>
+                            <p class="text-muted font-8 mb-0" data-lang="prev2_desc">Coat wheat seeds with fungicides (e.g. Carboxin or Thiram) before sowing. Seed treatment controls early seedling blights and smut spores carried on seed hulls.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card border-0 shadow bg-glass p-4 h-100 hover-lift">
+                            <i class="fa-solid fa-water text-success fs-1 mb-3"></i>
+                            <h5 class="fw-bold" data-lang="prev3_title">Proper Irrigation</h5>
+                            <p class="text-muted font-8 mb-0" data-lang="prev3_desc">Avoid overhead sprinkler irrigation during warm humid days, as leaf wetness invites Rust spore germination. Prefer drip irrigation or early morning watering to allow leaves to dry rapidly.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card border-0 shadow bg-glass p-4 h-100 hover-lift">
+                            <i class="fa-solid fa-shield-halved text-warning fs-1 mb-3"></i>
+                            <h5 class="fw-bold" data-lang="prev4_title">Resistant Varieties</h5>
+                            <p class="text-muted font-8 mb-0" data-lang="prev4_desc">Cultivate certified crop varieties resistant to Stripe Rust (e.g., HD-2967, HD-3086) and Stem Rust (e.g., DBW-187). Genetic resistance is the most cost-effective protection barrier.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card border-0 shadow bg-glass p-4 h-100 hover-lift">
+                            <i class="fa-solid fa-wheat-awn-circle-exclamation text-success fs-1 mb-3"></i>
+                            <h5 class="fw-bold" data-lang="prev5_title">Balanced Fertilization</h5>
+                            <p class="text-muted font-8 mb-0" data-lang="prev5_desc">Avoid excessive nitrogen fertilizers, which create a dense, succulent leaf canopy highly vulnerable to Powdery Mildew and Rust fungi. Apply balanced N-P-K ratios.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card border-0 shadow bg-glass p-4 h-100 hover-lift">
+                            <i class="fa-solid fa-magnifying-glass-chart text-warning fs-1 mb-3"></i>
+                            <h5 class="fw-bold" data-lang="prev6_title">Regular Field Monitoring</h5>
+                            <p class="text-muted font-8 mb-0" data-lang="prev6_desc">Examine crops twice a week, particularly the lower leaf sheaths. Capture images of any yellow spots and check with CropShield to target fungicide sprays immediately.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- DASHBOARD SECTION -->
+        <!-- ============================================== -->
+        <section id="dashboard-sec" class="app-section">
+            <div class="container my-5">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-success fw-bold" data-lang="dash_title">Farmer Analytics Desk</h2>
+                    <div class="title-divider mx-auto bg-warning"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto" data-lang="dash_sub">Visual statistics and historical diagnostic timelines showing crop health status and distribution.</p>
+                </div>
+
+                <div class="row g-4 mb-5 text-center font-poppins">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow bg-success text-white p-3">
+                            <h6 class="text-uppercase font-8 tracking-wider" data-lang="dash_total">Total Predictions Checked</h6>
+                            <h2 class="fw-bold mb-0" id="dash-total-val">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow bg-light-green text-success p-3">
+                            <h6 class="text-uppercase font-8 tracking-wider" data-lang="dash_healthy">Healthy Crops Detected</h6>
+                            <h2 class="fw-bold mb-0" id="dash-healthy-val">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow bg-glass text-danger p-3" style="border-left: 4px solid red;">
+                            <h6 class="text-uppercase font-8 tracking-wider" data-lang="dash_diseased">Diseased Crops Detected</h6>
+                            <h2 class="fw-bold mb-0" id="dash-diseased-val">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <!-- Charts -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow bg-glass p-4" style="height: 380px;">
+                            <h5 class="fw-bold text-success mb-3 font-poppins" data-lang="chart_dist">Disease Occurrence Ratio</h5>
+                            <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                                <canvas id="chart-disease-distribution"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow bg-glass p-4" style="height: 380px;">
+                            <h5 class="fw-bold text-success mb-3 font-poppins" data-lang="chart_ratio">Healthy vs Infected Scan Count</h5>
+                            <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                                <canvas id="chart-healthy-ratio"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <div class="card border-0 shadow bg-glass p-4">
+                    <h5 class="fw-bold text-success mb-4 font-poppins"><i class="fa-solid fa-clock-rotate-left me-2"></i> <span data-lang="history_title">My Diagnostic History</span></h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover font-poppins align-middle">
+                            <thead class="table-success">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Analyzed Leaf</th>
+                                    <th>Diagnosis Name</th>
+                                    <th>Confidence</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Report</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">No prediction records found. Run a diagnosis to seed data.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- ABOUT SECTION -->
+        <!-- ============================================== -->
+        <section id="about-sec" class="app-section">
+            <div class="container my-5 font-poppins">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6">
+                        <span class="text-success fw-bold text-uppercase tracking-wider" data-lang="about_badge">What is CropShield?</span>
+                        <h2 class="fw-bold text-success mt-2 mb-3" data-lang="about_title">AI Agriculture Health Portal</h2>
+                        <p class="text-muted font-9">CropShield is a research-backed precision agricultural application built to support farmers, agricultural students, and research bodies. It focuses exclusively on protecting wheat crops from lethal rust spores and blights.</p>
+                        <p class="text-muted font-9">Using a 7-class Convolutional Neural Network (CNN) architecture, CropShield analyses structural characteristics of rust pustules and mold lesions from simple leaf photos. It provides localized chemical treatments, doses of fungicides, and preventative protocols in both English and Tamil.</p>
+                        <div class="mt-4 row g-3 text-center">
+                            <div class="col-6">
+                                <div class="bg-light-green p-3 rounded shadow-sm border border-success">
+                                    <h3 class="fw-bold text-success mb-1">Deep Learning</h3>
+                                    <small class="text-muted">CNN Core</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="bg-warning-light p-3 rounded shadow-sm border border-warning">
+                                    <h3 class="fw-bold text-warning mb-1">Zero Latency</h3>
+                                    <small class="text-muted">Mobile Ready</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="rounded overflow-hidden shadow-lg border border-success border-4" style="height: 380px;">
+                            <img src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?auto=format&fit=crop&w=800&q=80" alt="Wheat field" class="w-100 h-100 object-fit-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- CONTACT SECTION -->
+        <!-- ============================================== -->
+        <section id="contact-sec" class="app-section">
+            <div class="container my-5 font-poppins">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-success fw-bold" data-lang="contact_title">Get In Touch</h2>
+                    <div class="title-divider mx-auto bg-warning"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto" data-lang="contact_sub">Have queries regarding crop diagnosis or API integration? Send us a message.</p>
+                </div>
+
+                <div class="row g-5">
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow bg-glass p-4 h-100">
+                            <h5 class="fw-bold text-success mb-4"><i class="fa-solid fa-address-book me-2"></i> Contact Details</h5>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-light-green p-3 rounded-circle text-success me-3"><i class="fa-solid fa-phone"></i></div>
+                                <div>
+                                    <small class="text-muted d-block">Call Us</small>
+                                    <strong class="text-dark">+91 98765 43210</strong>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-light-green p-3 rounded-circle text-success me-3"><i class="fa-solid fa-envelope"></i></div>
+                                <div>
+                                    <small class="text-muted d-block">Email Support</small>
+                                    <strong class="text-dark">support@cropshield.com</strong>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-light-green p-3 rounded-circle text-success me-3"><i class="fa-solid fa-location-dot"></i></div>
+                                <div>
+                                    <small class="text-muted d-block">Office Address</small>
+                                    <strong class="text-dark">Agricultural AI Center, SIH Hub, India</strong>
+                                </div>
+                            </div>
+                            
+                            <!-- Leaf map iframe placeholder -->
+                            <div class="rounded overflow-hidden shadow-sm" style="height: 150px;">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15551.488344007877!2d80.1268305!3d12.9800741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525f6fa825cbfb%3A0xe54e6015b6d19313!2sTambaram%2C%20Chennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1684343110000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow bg-glass p-4 h-100">
+                            <h5 class="fw-bold text-success mb-4"><i class="fa-solid fa-paper-plane me-2"></i> Feedback & Contact Form</h5>
+                            <form id="feedback-form" onsubmit="submitFeedbackForm(event)">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="fb-name" class="form-label font-8 text-muted">Your Name</label>
+                                        <input type="text" class="form-control" id="fb-name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="fb-email" class="form-label font-8 text-muted">Email Address</label>
+                                        <input type="email" class="form-control" id="fb-email" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="fb-rating" class="form-label font-8 text-muted">System Rating</label>
+                                        <select class="form-select" id="fb-rating" required>
+                                            <option value="5">⭐⭐⭐⭐⭐ (Excellent AI accuracy)</option>
+                                            <option value="4">⭐⭐⭐⭐ (Good response speed)</option>
+                                            <option value="3">⭐⭐⭐ (Average UI)</option>
+                                            <option value="2">⭐⭐ (Needs model improvement)</option>
+                                            <option value="1">⭐ (Unsatisfactory)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="fb-message" class="form-label font-8 text-muted">Message / Bug Report</label>
+                                        <textarea class="form-control" id="fb-message" rows="4" placeholder="Enter details..." required></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success px-4 py-3 fw-bold"><i class="fa-solid fa-paper-plane me-1"></i> Send Feedback</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion FAQ -->
+                <div class="mt-5 pt-3">
+                    <h4 class="fw-bold text-success text-center mb-4" data-lang="faq_heading">Frequently Answered Questions</h4>
+                    <div class="accordion shadow border-0" id="faqAccordion">
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-light text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Which wheat leaf diseases can this AI model classify?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body font-9 text-muted">
+                                    CropShield is custom-tailored for 6 lethal diseases: Stripe Rust, Leaf Rust, Stem Rust, Powdery Mildew, Leaf Blight, and Septoria Leaf Blotch. It also identifies fully healthy leaves.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-light text-success fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    How does the preprocessing layer improve accuracy?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body font-9 text-muted">
+                                    First, images are resized to 224x224 to match the expected CNN shape. Next, a Gaussian filter removes shadow grain noise, and division normalization locks color intensities, neutralizing weather variations.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- ADMIN PANEL SECTION -->
+        <!-- ============================================== -->
+        <section id="admin-sec" class="app-section">
+            <div class="container my-5 font-poppins">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-danger fw-bold"><i class="fa-solid fa-user-shield me-2"></i> CropShield Admin Dashboard</h2>
+                    <div class="title-divider mx-auto bg-danger"></div>
+                    <p class="text-muted font-poppins mt-2 col-md-8 mx-auto">Central desk for predictions monitoring, farmer lists, dataset metrics, and system feedbacks.</p>
+                </div>
+
+                <!-- Admin Tabs -->
+                <ul class="nav nav-tabs border-bottom mb-4" id="adminTab" role="tablist">
+                    <li class="nav-item"><button class="nav-link active text-success fw-bold" id="admin-scans-tab" data-bs-toggle="tab" data-bs-target="#admin-scans" type="button"><i class="fa-solid fa-heart-pulse me-1"></i> Scan Monitoring</button></li>
+                    <li class="nav-item"><button class="nav-link text-success fw-bold" id="admin-users-tab" data-bs-toggle="tab" data-bs-target="#admin-users" type="button"><i class="fa-solid fa-users me-1"></i> Manage Farmers</button></li>
+                    <li class="nav-item"><button class="nav-link text-success fw-bold" id="admin-diseases-tab" data-bs-toggle="tab" data-bs-target="#admin-diseases" type="button"><i class="fa-solid fa-database me-1"></i> Manage Catalog</button></li>
+                    <li class="nav-item"><button class="nav-link text-success fw-bold" id="admin-feedback-tab" data-bs-toggle="tab" data-bs-target="#admin-feedback" type="button"><i class="fa-solid fa-comments me-1"></i> User Feedbacks</button></li>
+                </ul>
+
+                <div class="tab-content" id="adminTabContent">
+                    <!-- Scan Monitoring Tab -->
+                    <div class="tab-pane fade show active" id="admin-scans">
+                        <div class="card border-0 shadow bg-glass p-3">
+                            <h5 class="fw-bold text-success mb-3">Live Prediction Streams</h5>
+                            <div class="table-responsive">
+                                <table class="table align-middle font-poppins">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Farmer Name</th>
+                                            <th>Date</th>
+                                            <th>Model Output</th>
+                                            <th>Confidence</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-scans-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manage Farmers Tab -->
+                    <div class="tab-pane fade" id="admin-users">
+                        <div class="card border-0 shadow bg-glass p-3">
+                            <h5 class="fw-bold text-success mb-3">Registered Users</h5>
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead class="table-success">
+                                        <tr>
+                                            <th>User ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Role</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-users-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manage Diseases Tab -->
+                    <div class="tab-pane fade" id="admin-diseases">
+                        <div class="card border-0 shadow bg-glass p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold text-success mb-0">Pathogen Database Catalog</h5>
+                                <button class="btn btn-warning btn-sm fw-semibold" onclick="openCreateDiseaseModal()"><i class="fa-solid fa-plus me-1"></i> Add Disease</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead class="table-warning">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Scientific Name</th>
+                                            <th>Severity</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-diseases-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Feedbacks Tab -->
+                    <div class="tab-pane fade" id="admin-feedback">
+                        <div class="card border-0 shadow bg-glass p-3">
+                            <h5 class="fw-bold text-success mb-3">Farmer Feedbacks & Ratings</h5>
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead class="table-info">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Rating</th>
+                                            <th>Message</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-feedbacks-table">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer py-5 text-white">
+        <div class="container font-poppins">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-warning mb-3">CropShield</h5>
+                    <p class="font-8 text-light-50">CropShield uses deep learning models to enable local farmers to scan and protect wheat harvests from blights and fungal rust outbreaks.</p>
+                    <p class="font-8 mb-0">&copy; 2026 CropShield System. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-warning mb-3">Quick Navigation</h5>
+                    <ul class="list-unstyled font-8">
+                        <li><a href="#" onclick="showSection('home-sec')" class="text-white text-decoration-none hover-warning">Home Portal</a></li>
+                        <li><a href="#" onclick="showSection('detection-sec')" class="text-white text-decoration-none hover-warning">AI Diagnostic Lab</a></li>
+                        <li><a href="#" onclick="showSection('diseases-sec')" class="text-white text-decoration-none hover-warning">Diseases Encyclopedia</a></li>
+                        <li><a href="#" onclick="showSection('prevention-sec')" class="text-white text-decoration-none hover-warning">Smart Preventions</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-warning mb-3">Powered By</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-success">Java Spring Boot</span>
+                        <span class="badge bg-warning text-dark">Python Flask</span>
+                        <span class="badge bg-success">TensorFlow CNN</span>
+                        <span class="badge bg-warning text-dark">OpenCV</span>
+                        <span class="badge bg-success">MySQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================== -->
+    <!-- LOGIN / REGISTER MODAL -->
+    <!-- ============================================== -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered font-poppins">
+            <div class="modal-content border-0 bg-glass shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h4 class="fw-bold text-success modal-title" id="auth-modal-title">Sign In</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeAuthModal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    <form id="login-form" onsubmit="submitLoginForm(event)">
+                        <div class="mb-3">
+                            <label for="login-email" class="form-label font-8 text-muted">Email Address</label>
+                            <input type="email" class="form-control" id="login-email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="login-password" class="form-label font-8 text-muted">Password</label>
+                            <input type="password" class="form-control" id="login-password" required>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between align-items-center font-8">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="remember-me">
+                                <label class="form-check-label text-muted" for="remember-me">Remember Me</label>
+                            </div>
+                            <a href="#" class="text-success text-decoration-none" onclick="triggerForgotPassword()">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-bold mb-3"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</button>
+                        <p class="text-center font-8 text-muted mb-0">Don't have an account? <a href="#" class="text-success text-decoration-none fw-bold" onclick="toggleAuthForm('register')">Register here</a></p>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="register-form" class="d-none" onsubmit="submitRegisterForm(event)">
+                        <div class="mb-2">
+                            <label for="reg-name" class="form-label font-8 text-muted">Full Name</label>
+                            <input type="text" class="form-control" id="reg-name" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="reg-email" class="form-label font-8 text-muted">Email Address</label>
+                            <input type="email" class="form-control" id="reg-email" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="reg-phone" class="form-label font-8 text-muted">Phone Number</label>
+                            <input type="tel" class="form-control" id="reg-phone" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="reg-password" class="form-label font-8 text-muted">Password</label>
+                            <input type="password" class="form-control" id="reg-password" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="reg-role" class="form-label font-8 text-muted">Registered Role</label>
+                            <select class="form-select" id="reg-role" required>
+                                <option value="FARMER">Farmer (Agricultural Owner)</option>
+                                <option value="ADMIN">Admin (System Analyst)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-bold mb-2"><i class="fa-solid fa-user-plus me-1"></i> Register</button>
+                        <p class="text-center font-8 text-muted mb-0">Already registered? <a href="#" class="text-success text-decoration-none fw-bold" onclick="toggleAuthForm('login')">Sign in</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- CREATE/EDIT DISEASE MODAL -->
+    <!-- ============================================== -->
+    <div class="modal fade" id="diseaseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered font-poppins">
+            <div class="modal-content border-0 bg-glass shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h4 class="fw-bold text-success modal-title" id="disease-modal-title">Add Disease</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeDiseaseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="disease-form" onsubmit="submitDiseaseForm(event)">
+                        <input type="hidden" id="disease-id">
+                        <div class="mb-2">
+                            <label for="dis-name" class="form-label font-8 text-muted">Disease Name</label>
+                            <input type="text" class="form-control" id="dis-name" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dis-scientific" class="form-label font-8 text-muted">Scientific Name</label>
+                            <input type="text" class="form-control" id="dis-scientific" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dis-severity" class="form-label font-8 text-muted">Severity</label>
+                            <select class="form-select" id="dis-severity" required>
+                                <option value="LOW">LOW</option>
+                                <option value="MEDIUM">MEDIUM</option>
+                                <option value="HIGH">HIGH</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dis-symptoms" class="form-label font-8 text-muted">Symptoms</label>
+                            <textarea class="form-control" id="dis-symptoms" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dis-causes" class="form-label font-8 text-muted">Causes</label>
+                            <textarea class="form-control" id="dis-causes" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dis-prevention" class="form-label font-8 text-muted">Prevention</label>
+                            <textarea class="form-control" id="dis-prevention" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dis-treatment" class="form-label font-8 text-muted">Treatment</label>
+                            <textarea class="form-control" id="dis-treatment" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dis-fungicide" class="form-label font-8 text-muted">Recommended Fungicide</label>
+                            <input type="text" class="form-control" id="dis-fungicide" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-bold mt-2"><i class="fa-solid fa-save me-1"></i> Save Disease</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- FLOATING AI CHATBOT WIDGET -->
+    <!-- ============================================== -->
+    <div class="chatbot-widget shadow" id="chatbot-box" style="display: none;">
+        <div class="chatbot-header d-flex justify-content-between align-items-center bg-success text-white p-3 font-poppins">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-robot"></i>
+                <span class="fw-bold font-9">CropShield AI Chat</span>
+            </div>
+            <button class="btn btn-link text-white p-0 m-0 border-0" onclick="toggleChatbot()" title="Close Chat">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+        </div>
+        <div class="chatbot-messages p-3 font-poppins" id="chatbot-msg-container">
+            <div class="bot-msg bg-light-green p-2 rounded mb-2 font-8 text-dark">
+                Hello! I am CropShield's smart agronomy helper. Ask me questions on wheat leaf spots, rust dosages, or irrigation guidelines.
+            </div>
+        </div>
+        <div class="chatbot-input p-2 border-top">
+            <div class="input-group">
+                <input type="text" class="form-control form-control-sm font-poppins font-8" id="chatbot-text-input" placeholder="Type a message..." onkeyup="checkChatbotEnter(event)">
+                <button class="btn btn-success btn-sm" onclick="sendChatbotMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- EMERGENCY VETERINARIAN MODAL -->
+    <!-- ============================================== -->
+    <div class="modal fade" id="emergencyVetModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered font-poppins">
+            <div class="modal-content border-2 border-danger bg-light">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-truck-medical me-2"></i> 🚨 EMERGENCY VETERINARY ASSISTANCE</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <div class="fs-1 text-danger mb-2"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <h5 class="fw-bold text-danger">Immediate Veterinary Attention Recommended</h5>
+                    <p class="text-muted font-9 mb-3">If your animal displays inability to stand, severe respiratory distress, blood in stool/discharge, or total refusal of water, do not delay.</p>
+                    
+                    <div class="bg-white p-3 rounded shadow-sm border border-danger mb-3 text-start font-8">
+                        <p class="mb-1 text-dark"><strong>Government Animal Helpline:</strong> <a href="tel:18001801551" class="text-danger fw-bold">1800-180-1551</a></p>
+                        <p class="mb-1 text-dark"><strong>Local Veterinary Dispensary:</strong> <a href="tel:1962" class="text-danger fw-bold">1962 (Mobile Vet Clinic)</a></p>
+                        <p class="mb-0 text-dark"><strong>Emergency Status:</strong> Immediate Field Dispatch Ready</p>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="tel:1962" class="btn btn-danger flex-grow-1 fw-bold py-2"><i class="fa-solid fa-phone me-1"></i> Call 1962 Emergency Helpline</a>
+                        <button type="button" class="btn btn-secondary font-8" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Control Script -->
+    <script src="app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,371 @@
+/* CropShield Main Stylesheet - Premium Agriculture Theme */
+
+:root {
+    --primary-color: #2E7D32; /* Dark Green */
+    --primary-hover: #1B5E20;
+    --secondary-color: #D4AF37; /* Wheat Gold */
+    --accent-color: #4CAF50; /* Leaf Green */
+    --bg-color: #F4F6F4;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --text-color: #2D3748;
+    --text-muted: #718096;
+    --nav-bg: #1B5E20;
+    --input-bg: #FFFFFF;
+    --border-color: rgba(46, 125, 50, 0.15);
+    --shadow-color: rgba(0, 0, 0, 0.08);
+}
+
+.dark-mode {
+    --primary-color: #81C784;
+    --primary-hover: #A5D6A7;
+    --secondary-color: #F4D03F;
+    --accent-color: #66BB6A;
+    --bg-color: #121812;
+    --card-bg: rgba(26, 36, 26, 0.9);
+    --text-color: #E2E8F0;
+    --text-muted: #A0AEC0;
+    --nav-bg: #0A100A;
+    --input-bg: #222E22;
+    --border-color: rgba(129, 199, 132, 0.25);
+    --shadow-color: rgba(0, 0, 0, 0.35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+}
+
+/* Custom Typography & Utility classes */
+.font-poppins {
+    font-family: 'Poppins', sans-serif;
+}
+.font-8 {
+    font-size: 0.88rem;
+}
+.font-9 {
+    font-size: 0.95rem;
+}
+.italic {
+    font-style: italic;
+}
+.tracking-wide {
+    letter-spacing: 1px;
+}
+.bg-glass {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px var(--shadow-color) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+}
+.bg-light-green {
+    background-color: rgba(76, 175, 80, 0.1) !important;
+}
+.bg-warning-light {
+    background-color: rgba(212, 175, 55, 0.15) !important;
+}
+.text-shadow {
+    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.hover-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px var(--shadow-color);
+}
+.hover-warning:hover {
+    color: var(--secondary-color) !important;
+}
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* Navigation bar */
+.navbar {
+    background-color: var(--nav-bg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-bottom: 2px solid var(--secondary-color);
+    transition: background-color 0.4s ease;
+}
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.25s ease;
+}
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+    color: var(--secondary-color) !important;
+}
+.language-select {
+    width: auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.language-select option {
+    background-color: var(--nav-bg);
+    color: white;
+}
+
+/* Hero Section */
+.hero-banner {
+    position: relative;
+    background: linear-gradient(rgba(27, 94, 32, 0.75), rgba(27, 94, 32, 0.55)), 
+                url('https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=1600&q=80') no-repeat center center;
+    background-size: cover;
+    height: 90vh;
+    min-height: 550px;
+    margin-bottom: -60px;
+}
+.search-box-container {
+    border-radius: 30px;
+    overflow: hidden;
+    background-color: white;
+    border: 3px solid var(--secondary-color);
+    position: relative;
+}
+
+/* Stats panel */
+.stats-bar-container {
+    position: relative;
+    z-index: 10;
+}
+.stat-card {
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+.stat-card:hover {
+    transform: scale(1.03);
+}
+
+/* Section titles */
+.section-title {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+.title-divider {
+    height: 4px;
+    width: 60px;
+    border-radius: 2px;
+}
+
+/* Section controls */
+.app-section {
+    display: none;
+    padding: 60px 0;
+    min-height: calc(100vh - 350px);
+}
+.app-section.active-section {
+    display: block;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+    height: 200px;
+    transition: all 0.3s ease;
+}
+.upload-dropzone:hover {
+    background-color: rgba(76, 175, 80, 0.18) !important;
+    border-color: var(--secondary-color) !important;
+}
+.step-line {
+    padding: 10px 15px;
+    border-left: 3px solid #E2E8F0;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+.step-line.active {
+    border-left-color: var(--primary-color);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    font-weight: 600;
+}
+
+/* Disease Cards */
+.disease-card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+.disease-img-wrapper {
+    height: 180px;
+    position: relative;
+}
+.severity-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: bold;
+}
+.badge-low { background-color: #E8F5E9; color: #2E7D32; }
+.badge-medium { background-color: #FFF9C4; color: #F57F17; }
+.badge-high { background-color: #FFEBEE; color: #C62828; }
+
+/* Modals and Forms */
+.modal-content {
+    border-radius: 20px;
+}
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+}
+.form-control:focus, .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--accent-color);
+    color: var(--text-color);
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.2);
+}
+
+/* Chatbot Widget */
+.chatbot-widget {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 320px;
+    height: 420px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    animation: slideUp 0.3s ease;
+}
+.chatbot-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: var(--bg-color);
+}
+.chatbot-trigger-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 30px;
+    width: 55px;
+    height: 55px;
+    z-index: 1000;
+    transition: transform 0.2s ease;
+}
+.chatbot-trigger-btn:hover {
+    transform: scale(1.1);
+}
+.bot-msg {
+    align-self: flex-start;
+    border-radius: 10px 10px 10px 0;
+    max-width: 85%;
+}
+.user-msg {
+    align-self: flex-end;
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border-radius: 10px 10px 0 10px;
+    max-width: 85%;
+    margin-left: auto;
+}
+
+/* Footer styling */
+.footer {
+    background-color: #121812;
+    border-top: 3px solid var(--secondary-color);
+}
+
+/* Keyframe Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-banner {
+        height: auto;
+        padding: 100px 0;
+    }
+    .stats-bar-container {
+        margin-top: 20px;
+    }
+    .chatbot-widget {
+        right: 15px;
+        bottom: 85px;
+        width: calc(100vw - 30px);
+    }
+    .chatbot-trigger-btn {
+        right: 15px;
+    }
+}
+
+/* Animal Care Section Styles */
+.animal-card {
+    transition: all 0.3s ease;
+    background-color: var(--card-bg);
+}
+.animal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12) !important;
+}
+.animal-card.active-animal {
+    background-color: rgba(46, 125, 50, 0.08) !important;
+    border-color: #2E7D32 !important;
+    box-shadow: 0 0 12px rgba(46, 125, 50, 0.25) !important;
+}
+
+@keyframes pulseRed {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(220, 53, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+    }
+}
+.pulse-red {
+    animation: pulseRed 1.8s infinite;
+}
+
